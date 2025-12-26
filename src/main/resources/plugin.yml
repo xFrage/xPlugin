@@ -1,0 +1,20 @@
+name: xPlugin
+version: '6.9'
+main: com.xfrage.Main
+api-version: '1.21'
+authors: [ xFrage ]
+
+commands:
+  timer:
+    aliases: [t]
+    description: use "/t resume" to start/unpause the timer, "/t pause" to pause the timer, "/t set" to set the timer
+      to a specific number (in seconds), "/t reset" to reset the timer to 00:00:00
+  challenge:
+    aliases: [c]
+  menu:
+    aliases: [m]
+  createworld:
+    aliases: [cw]
+    description: use "/cw create" to create a new world-set (overworld, nether, end), "/cw tp" to teleport all players
+      into an existing world, "/cw delete" to delete a world-set, "/cw list" to list all active world-sets, "/cw current"
+      to show the world you're currently in
