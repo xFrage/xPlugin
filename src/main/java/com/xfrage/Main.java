@@ -64,7 +64,6 @@ public final class Main extends JavaPlugin {
     x Sekunden still stehen = damage
     Springen verboten / springen = damage
     verteilter damage = erhaltener damage
-    x sekunden random effekt
     damage verteilen = 50 blöcke nach oben teleportiert
 
     mobs haben x mal so viel health / machen x mal so viel damage

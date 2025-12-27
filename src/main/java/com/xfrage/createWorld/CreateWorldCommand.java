@@ -1,11 +1,13 @@
 package com.xfrage.createWorld;
 
 import com.xfrage.Main;
+import com.xfrage.menu.Menu;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
@@ -78,18 +80,29 @@ public class CreateWorldCommand implements CommandExecutor {
     }
 
     public void tpWorld(String baseName, CommandSender sender) {
+        World world = Bukkit.getWorld(baseName);
         if (Bukkit.getWorld(baseName) == null) {
             sender.sendMessage(Main.getInstance().prefix + ChatColor.RED + "world-set " + baseName + " does not exist! try /cw list");
             return;
         }
-        int x = (int) Objects.requireNonNull(Bukkit.getWorld(baseName)).getSpawnLocation().getX();
-        int z = (int) Objects.requireNonNull(Bukkit.getWorld(baseName)).getSpawnLocation().getZ();
-        double y = Objects.requireNonNull(Bukkit.getWorld(baseName)).getHighestBlockYAt(x, z) + 1;
-        Location targetLoc = new Location(Bukkit.getWorld(baseName), x, y, z);
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.teleport(targetLoc);
+        int x = (int) Objects.requireNonNull(world).getSpawnLocation().getX();
+        int z = (int) Objects.requireNonNull(world).getSpawnLocation().getZ();
+        double y = Objects.requireNonNull(world).getHighestBlockYAt(x, z) + 1;
+        Location targetLoc = new Location(world, x, y, z);
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            p.teleport(targetLoc);
+            p.getInventory().clear();
         }
-        Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.GREEN + "all players have been teleported to world " + baseName + "!");
+
+        if (world.getName().equals("world")) {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                p.getInventory().addItem(Menu.getItem(new ItemStack(Material.COMPASS), "menu", ""));
+            }
+            Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.GREEN + "all players have been teleported back!");
+            return;
+        }
+
+        Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.GREEN + "all players have been teleported to " + baseName + "!");
     }
 
     public void deleteWorlds(String baseName, CommandSender sender) {
@@ -135,12 +148,16 @@ public class CreateWorldCommand implements CommandExecutor {
     }
 
     public void archive(CommandSender sender, String baseName) {
-        File archiveDir = createArchiveDir(baseName);
         try {
+            if (baseName.equals("world")) {
+                sender.sendMessage(Main.getInstance().prefix + ChatColor.RED + "you cannot archive the main world! idiot");
+                return;
+            }
             if (!totalIsEmpty(baseName)) {
                 sender.sendMessage(Main.getInstance().prefix + ChatColor.RED + "there are still players in this world! try /cw tp world");
                 return;
             }
+            File archiveDir = createArchiveDir(baseName);
             archiveWorld(sender, baseName, archiveDir);
             archiveWorld(sender, baseName + "_nether", archiveDir);
             archiveWorld(sender, baseName + "_the_end", archiveDir);

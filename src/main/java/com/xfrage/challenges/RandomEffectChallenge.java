@@ -23,10 +23,13 @@ public class RandomEffectChallenge {
         RandomEffectChallenge.time = seconds;
 
         if (enabled) {
-            giveRandomEffect(time);
+            generateRandomEffect(time);
+            broadcastEffect();
             start(time);
+            Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.GREEN + "Random Effect Challenge has been enabled!");
         } else {
             stop();
+            Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.RED + "Random Effect Challenge has been disabled!");
         }
     }
 
@@ -34,7 +37,7 @@ public class RandomEffectChallenge {
         return enabled;
     }
 
-    public static void giveRandomEffect(int seconds) {
+    public static void generateRandomEffect(int seconds) {
         Random random = new Random();
         int x = random.nextInt(1, 35);
         int amp = random.nextInt(1, 5);
@@ -76,7 +79,7 @@ public class RandomEffectChallenge {
             case 31 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.UNLUCK, dur, amp, true), amp);
             case 32 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, dur, amp, true), amp);
             case 33 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.WEAKNESS, dur, amp, true), amp);
-            case 34 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.WITHER, dur, amp, true), amp);
+            case 34 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.POISON, dur, amp, true), amp);
         }
 
     }
@@ -103,9 +106,9 @@ public class RandomEffectChallenge {
 
                 if (time <= 0) {
                     // HIER: random Effekt ausführen
-                    giveRandomEffect(seconds);
+                    generateRandomEffect(seconds);
                     time = seconds; // bei getTime() == 0 -> auf 10 setzen
-                    Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.GREEN + "next effect: " + effect.getType().getName() + " " + amplifier);
+                    broadcastEffect();
                     return;
                 }
                 time--;
@@ -113,6 +116,10 @@ public class RandomEffectChallenge {
         };
 
         task.runTaskTimer(Main.getInstance(), 0, 20);
+    }
+
+    public static void broadcastEffect() {
+        Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.GREEN + "next effect: " + effect.getType().getName() + " " + amplifier);
     }
 
     private static void stop() {
