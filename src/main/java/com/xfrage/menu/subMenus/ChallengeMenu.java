@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class ChallengeMenu implements Listener {
 
-    private static String challengeInvName = "Challenge Menu";
+    private static final String challengeInvName = "Challenge Menu";
 
     @EventHandler
     public boolean onInventoryClick(InventoryClickEvent event) {

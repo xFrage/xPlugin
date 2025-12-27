@@ -30,9 +30,7 @@ public class TimerMenu extends Menu implements Listener {
                 player.closeInventory();
             }
             case 12 -> TimerCommand.timerPause(player);
-            case 14 -> {
-                player.performCommand("weather clear");
-            }
+            case 14 -> player.performCommand("weather clear");
             case 16 -> TimerCommand.timerReset(player);
         }
         return true;

@@ -17,14 +17,13 @@ import java.util.Objects;
 
 public class MaxHealthMenu implements Listener {
 
-    private static String maxHealthMenuInvName = "Max Health Menu";
+    private static final String maxHealthMenuInvName = "Max Health Menu";
 
     @EventHandler
     public boolean onInventoryClick(InventoryClickEvent event) {
         if (!event.getView().getTitle().equals(maxHealthMenuInvName)) return false;
         Menu.cancelClick(event, maxHealthMenuInvName);
 
-        Player player = (Player) event.getWhoClicked();
         int slot = event.getSlot();
 
         switch(slot) {
@@ -49,11 +48,11 @@ public class MaxHealthMenu implements Listener {
     public void reduceMaxHealth(Player player) {
         int currentMaxHealth = (int) Objects.requireNonNull(player.getAttribute(Attribute.MAX_HEALTH)).getValue();
         switch (currentMaxHealth) {
-            case 40 -> player.getAttribute(Attribute.MAX_HEALTH).setBaseValue(20); // 10 hearts
-            case 20 -> player.getAttribute(Attribute.MAX_HEALTH).setBaseValue(10); // 5 hearts
-            case 10 -> player.getAttribute(Attribute.MAX_HEALTH).setBaseValue(6); // 3 hearts
-            case 6 -> player.getAttribute(Attribute.MAX_HEALTH).setBaseValue(2); // 1 heart
-            case 2 -> player.getAttribute(Attribute.MAX_HEALTH).setBaseValue(1); // 0.5 hearts
+            case 40 -> Objects.requireNonNull(player.getAttribute(Attribute.MAX_HEALTH)).setBaseValue(20); // 10 hearts
+            case 20 -> Objects.requireNonNull(player.getAttribute(Attribute.MAX_HEALTH)).setBaseValue(10); // 5 hearts
+            case 10 -> Objects.requireNonNull(player.getAttribute(Attribute.MAX_HEALTH)).setBaseValue(6); // 3 hearts
+            case 6 -> Objects.requireNonNull(player.getAttribute(Attribute.MAX_HEALTH)).setBaseValue(2); // 1 heart
+            case 2 -> Objects.requireNonNull(player.getAttribute(Attribute.MAX_HEALTH)).setBaseValue(1); // 0.5 hearts
             case 1 -> {
                 player.sendMessage(Main.getInstance().prefix + ChatColor.RED + "minimum health reached!");
                 return;
@@ -75,11 +74,12 @@ public class MaxHealthMenu implements Listener {
                 return;
             }
         }
-        player.sendMessage(Main.getInstance().prefix + ChatColor.GREEN + "set max health to " + (int) player.getAttribute(Attribute.MAX_HEALTH).getBaseValue());
+        player.sendMessage(Main.getInstance().prefix + ChatColor.GREEN + "set max health to "
+                + (int) Objects.requireNonNull(player.getAttribute(Attribute.MAX_HEALTH)).getBaseValue());
     }
 
     public static void setNewHealth(Player player, int maxHealth) {
-        player.getAttribute(Attribute.MAX_HEALTH).setBaseValue(maxHealth);
+        Objects.requireNonNull(player.getAttribute(Attribute.MAX_HEALTH)).setBaseValue(maxHealth);
         player.setHealth(maxHealth);
     }
 

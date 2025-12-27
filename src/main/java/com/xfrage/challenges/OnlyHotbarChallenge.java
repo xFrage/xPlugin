@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 public class OnlyHotbarChallenge {
 
     private static boolean enabled = false;
-    private static String title = "Only Hotbar";
+    private static final String title = "Only Hotbar";
 
     public static boolean isEnabled() {
         return enabled;
@@ -25,10 +25,6 @@ public class OnlyHotbarChallenge {
             stopChallenge();
         }
 
-    }
-
-    public static String getTitle() {
-        return title;
     }
 
     public static void startChallenge() {

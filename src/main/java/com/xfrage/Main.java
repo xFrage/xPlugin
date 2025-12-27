@@ -48,7 +48,6 @@ public final class Main extends JavaPlugin {
         registerListeners();
 
         initChallengeList();
-        initChallenges();
 
     }
 
@@ -106,10 +105,6 @@ public final class Main extends JavaPlugin {
     public void registerTabCompleters() {
         Objects.requireNonNull(getCommand("timer")).setTabCompleter(new TimerTabCompleter());
         Objects.requireNonNull(getCommand("createworld")).setTabCompleter(new CreateWorldTabCompleter());
-    }
-
-    private void initChallenges() {
-        OnlyHotbarChallenge onlyHotbar = new OnlyHotbarChallenge();
     }
 
     private void initChallengeList() {

@@ -26,7 +26,7 @@ import java.util.Objects;
 
 public class Menu implements Listener, CommandExecutor {
 
-    private static String invName = "Menu";
+    private static final String invName = "Menu";
 
     @EventHandler
     public static boolean onInventoryClick(InventoryClickEvent event) {

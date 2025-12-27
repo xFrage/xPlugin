@@ -19,7 +19,7 @@ public class FreeTheEndListener implements Listener {
             timer.setRunning(false);
             Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.GREEN + "challenge done!");
             Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.GREEN + "final time: " + timer.timeNotation(timer.getTime()));
-        };
+        }
         return true;
     }
 
