@@ -17,4 +17,4 @@ commands:
     aliases: [cw]
     description: use "/cw create" to create a new world-set (overworld, nether, end), "/cw tp" to teleport all players
       into an existing world, "/cw delete" to delete a world-set, "/cw list" to list all active world-sets, "/cw current"
-      to show the world you're currently in
+      to show the world you're currently in, "/cw archive" to archive a world-set in /archives

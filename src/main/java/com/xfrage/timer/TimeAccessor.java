@@ -4,25 +4,48 @@ import java.io.*;
 
 public class TimeAccessor {
 
-    static final String filepath = "C:\\Users\\Anwender\\Dropbox\\PC\\Desktop\\xServer\\plugins\\timer.txt";
+    private static File file;
+
+    private TimeAccessor() {
+        // verhindert Instanziierung
+    }
+
+    public static void init(File dataFolder) {
+        file = new File(dataFolder, "timer.txt");
+
+        try {
+            if (!file.exists()) {
+                dataFolder.mkdirs();
+                file.createNewFile();
+            }
+        } catch (IOException e) {
+            System.err.println("Could not create timer.txt: " + e.getMessage());
+        }
+    }
 
     public static void saveTime(int time) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));) {
+        if (file == null) {
+            throw new IllegalStateException("TimeAccessor not initialized!");
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write(String.valueOf(time));
         } catch (IOException e) {
             System.err.println("Error writing to file: " + e.getMessage());
         }
-
     }
 
     public static int getCurrentTime() {
-        String line = "";
-        try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
-            line = reader.readLine();
+        if (file == null) {
+            throw new IllegalStateException("TimeAccessor not initialized!");
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line = reader.readLine();
+            return line != null ? Integer.parseInt(line) : 0;
         } catch (Exception e) {
             System.err.println("Error reading from file: " + e.getMessage());
+            return 0;
         }
-        return Integer.parseInt(line);
     }
-
 }

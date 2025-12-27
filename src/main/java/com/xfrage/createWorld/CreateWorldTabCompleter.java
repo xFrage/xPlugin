@@ -18,6 +18,7 @@ public class CreateWorldTabCompleter implements TabCompleter {
                 suggestions.add("delete");
                 suggestions.add("list");
                 suggestions.add("current");
+                suggestions.add("archive");
             }
         }
         return filterSuggestions(args[args.length - 1], suggestions);

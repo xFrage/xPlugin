@@ -3,13 +3,12 @@ package com.xfrage.timer;
 import com.xfrage.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
-
-import java.util.Objects;
 
 public class TimerCommand implements CommandExecutor {
 
@@ -41,6 +40,7 @@ public class TimerCommand implements CommandExecutor {
             for (PotionEffect effect : player.getActivePotionEffects()) {
                 player.removePotionEffect(effect.getType());
             }
+            player.setGameMode(GameMode.SURVIVAL);
         }
     }
 

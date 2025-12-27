@@ -1,6 +1,6 @@
-package com.xfrage.menu;
+package com.xfrage.menu.subMenus;
 
-import com.xfrage.timer.Timer;
+import com.xfrage.menu.Menu;
 import com.xfrage.timer.TimerCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,14 +14,12 @@ import org.bukkit.inventory.ItemStack;
 
 public class TimerMenu extends Menu implements Listener {
 
-    public static String timerInvName = "timer menu";
+    public static String timerInvName = "Timer Menu";
 
     @EventHandler
     public static boolean onInventoryClick(InventoryClickEvent event) {
-
-        if (event.getView().getTitle().equals(timerInvName)) {
-            event.setCancelled(true);
-        }
+        if (!event.getView().getTitle().equals(timerInvName)) return false;
+        Menu.cancelClick(event, timerInvName);
 
         Player player = (Player) event.getWhoClicked();
         int slot = event.getSlot();
@@ -37,7 +35,6 @@ public class TimerMenu extends Menu implements Listener {
             }
             case 16 -> TimerCommand.timerReset(player);
         }
-
         return true;
     }
 
