@@ -2,6 +2,7 @@ package com.xfrage;
 
 import com.xfrage.challenges.ChallengeCommand;
 import com.xfrage.challenges.OnlyHotbarChallenge;
+import com.xfrage.challenges.RandomEffectChallenge;
 import com.xfrage.createWorld.CreateWorldCommand;
 import com.xfrage.createWorld.CreateWorldTabCompleter;
 import com.xfrage.createWorld.PlayerPortalListener;
@@ -27,6 +28,7 @@ public final class Main extends JavaPlugin {
 
     private static Main instance;
     private Timer timer;
+    private RandomEffectChallenge secTimer;
 
     public String prefix = "[xPlugin] ";
 
@@ -56,9 +58,33 @@ public final class Main extends JavaPlugin {
         // Plugin shutdown logic
     }
 
+    /*
+    Ideen:
+
+    x Sekunden still stehen = damage
+    Springen verboten / springen = damage
+    verteilter damage = erhaltener damage
+    x sekunden random effekt
+    damage verteilen = 50 blöcke nach oben teleportiert
+
+    mobs haben x mal so viel health / machen x mal so viel damage
+
+    chunk wechsel = damage
+
+    keine items aufsammeln
+
+    randomizer
+
+    nur nach unten
+
+     */
+
+
+
     public void disableAllChallenges() {
 
         OnlyHotbarChallenge.setEnabled(false);
+        RandomEffectChallenge.setEnabled(false, 0);
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             MaxHealthMenu.setNewHealth(p, 20);
@@ -71,6 +97,8 @@ public final class Main extends JavaPlugin {
         TimeAccessor.init(getDataFolder());
         timer = new Timer(false, 0);
         timer.setTime(TimeAccessor.getCurrentTime());
+
+        secTimer = new RandomEffectChallenge();
     }
 
     public void registerListeners() {

@@ -19,11 +19,8 @@ public class OnlyHotbarChallenge {
     public static void setEnabled(boolean enabled) {
         OnlyHotbarChallenge.enabled = enabled;
 
-        if (enabled) { // hau barrier rein
-            startChallenge();
-        } else { // lösch barrier wieder raus
-            stopChallenge();
-        }
+        if (enabled) startChallenge();
+        else stopChallenge();
 
     }
 
