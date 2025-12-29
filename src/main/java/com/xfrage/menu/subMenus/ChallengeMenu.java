@@ -1,5 +1,6 @@
 package com.xfrage.menu.subMenus;
 
+import com.xfrage.challenges.DamageDealtEqualsResisted;
 import com.xfrage.challenges.OnlyHotbarChallenge;
 import com.xfrage.challenges.RandomEffectChallenge;
 import com.xfrage.menu.Menu;
@@ -29,6 +30,7 @@ public class ChallengeMenu implements Listener {
             case 10 -> player.openInventory(MaxHealthMenu.getInventory(player));
             case 12 -> OnlyHotbarChallenge.setEnabled(!OnlyHotbarChallenge.isEnabled());
             case 14 -> RandomEffectChallenge.setEnabled(!RandomEffectChallenge.isEnabled(), 30); // noch menü implementieren
+            case 16 -> DamageDealtEqualsResisted.setEnabled(!DamageDealtEqualsResisted.isEnabled());
         }
 
         return true;

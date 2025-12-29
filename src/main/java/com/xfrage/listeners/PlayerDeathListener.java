@@ -14,7 +14,6 @@ public class PlayerDeathListener implements Listener {
 
     @EventHandler
     public boolean onPlayerDeath(PlayerDeathEvent event) {
-        if (!Main.publicChallenges.isEmpty()) { // at least 1 challenge is active
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.setGameMode(GameMode.SPECTATOR);
             }
@@ -22,7 +21,7 @@ public class PlayerDeathListener implements Listener {
             timer.setRunning(false);
             Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.RED + "Challenge failed!");
             Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.RED + "wasted time: " + timer.timeNotation(timer.getTime()));
-        }
+
         return true;
     }
 

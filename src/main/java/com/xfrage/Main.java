@@ -1,8 +1,10 @@
 package com.xfrage;
 
 import com.xfrage.challenges.ChallengeCommand;
+import com.xfrage.challenges.DamageDealtEqualsResisted;
 import com.xfrage.challenges.OnlyHotbarChallenge;
 import com.xfrage.challenges.RandomEffectChallenge;
+import com.xfrage.commands.ResetPlayersCommand;
 import com.xfrage.createWorld.CreateWorldCommand;
 import com.xfrage.createWorld.CreateWorldTabCompleter;
 import com.xfrage.createWorld.PlayerPortalListener;
@@ -17,10 +19,13 @@ import com.xfrage.timer.TimerCommand;
 import com.xfrage.timer.TimerTabCompleter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -33,6 +38,7 @@ public final class Main extends JavaPlugin {
     public String prefix = "[xPlugin] ";
 
     public static ArrayList<String> publicChallenges;
+    public static boolean challengeActive = false;
 
     @Override
     public void onEnable() {
@@ -42,6 +48,8 @@ public final class Main extends JavaPlugin {
         getLogger().info("xPlugin initialised");
         getLogger().info("--------------------");
         getLogger().info("--------------------");
+
+        loadWorlds();
 
         registerTimer(); // set time (from timer.txt)
 
@@ -78,12 +86,46 @@ public final class Main extends JavaPlugin {
 
      */
 
+    public void loadWorlds() {
 
+        File serverDir = Bukkit.getWorldContainer();
+
+        for (File file : Objects.requireNonNull(serverDir.listFiles())) {
+
+            if (!file.isDirectory()) continue;
+
+            if (!new File(file, "level.dat").exists()) continue;
+
+            String worldName = file.getName();
+
+            // Skip default world (die lädt Bukkit selbst)
+            if (Bukkit.getWorld(worldName) != null) continue;
+
+            Bukkit.getLogger().info("loading world: " + worldName);
+
+            WorldCreator creator = new WorldCreator(worldName);
+
+            // Umgebung bestimmen
+            if (worldName.endsWith("_nether")) {
+                creator.environment(World.Environment.NETHER);
+            } else if (worldName.endsWith("_the_end")) {
+                creator.environment(World.Environment.THE_END);
+            } else {
+                creator.environment(World.Environment.NORMAL);
+            }
+
+            Bukkit.createWorld(creator);
+        }
+
+    }
 
     public void disableAllChallenges() {
 
+        challengeActive = false;
+
         OnlyHotbarChallenge.setEnabled(false);
         RandomEffectChallenge.setEnabled(false, 0);
+        DamageDealtEqualsResisted.setEnabled(false);
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             MaxHealthMenu.setNewHealth(p, 20);
@@ -127,6 +169,7 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("challenge")).setExecutor(new ChallengeCommand());
         Objects.requireNonNull(getCommand("menu")).setExecutor(new Menu());
         Objects.requireNonNull(getCommand("createworld")).setExecutor(new CreateWorldCommand());
+        Objects.requireNonNull(getCommand("resetplayers")).setExecutor(new ResetPlayersCommand());
     }
 
     public void registerTabCompleters() {
