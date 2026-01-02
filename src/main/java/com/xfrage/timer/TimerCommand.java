@@ -1,9 +1,9 @@
 package com.xfrage.timer;
 
 import com.xfrage.Main;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
+import com.xfrage.challenges.Challenge;
+import com.xfrage.challenges.ChallengeManager;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -42,6 +42,9 @@ public class TimerCommand implements CommandExecutor {
             }
             player.setGameMode(GameMode.SURVIVAL);
         }
+        ChallengeManager.resumeAllChallenges();
+
+        setDaylightCycle(true);
     }
 
     public static void timerPause(CommandSender sender) {
@@ -52,6 +55,10 @@ public class TimerCommand implements CommandExecutor {
         timer.setRunning(false);
         TimeAccessor.saveTime(timer.getTime());
         sender.sendMessage(Main.getInstance().prefix + ChatColor.GREEN + "timer paused!");
+        ChallengeManager.pauseAllChallenges();
+
+        setDaylightCycle(false);
+
     }
 
     public static void timerSet(CommandSender sender, String[] args) {
@@ -76,6 +83,15 @@ public class TimerCommand implements CommandExecutor {
         timer.setTime(0);
         TimeAccessor.saveTime(timer.getTime());
         sender.sendMessage(Main.getInstance().prefix + ChatColor.GREEN + "timer reset!");
+
+        setDaylightCycle(false);
+
+    }
+
+    private static void setDaylightCycle(boolean bool) {
+        for (World w : Bukkit.getWorlds()) {
+            w.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, bool);
+        }
     }
 
     private static void sendUsage(CommandSender sender) {

@@ -1,12 +1,13 @@
 package com.xfrage.menu.subMenus;
 
-import com.xfrage.challenges.DamageDealtEqualsResisted;
-import com.xfrage.challenges.OnlyHotbarChallenge;
-import com.xfrage.challenges.RandomEffectChallenge;
+import com.xfrage.Main;
+import com.xfrage.challenges.*;
 import com.xfrage.menu.Menu;
 import com.xfrage.menu.subMenus.challengeMenus.MaxHealthMenu;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,12 +29,36 @@ public class ChallengeMenu implements Listener {
 
         switch(slot) {
             case 10 -> player.openInventory(MaxHealthMenu.getInventory(player));
-            case 12 -> OnlyHotbarChallenge.setEnabled(!OnlyHotbarChallenge.isEnabled());
-            case 14 -> RandomEffectChallenge.setEnabled(!RandomEffectChallenge.isEnabled(), 30); // noch menü implementieren
-            case 16 -> DamageDealtEqualsResisted.setEnabled(!DamageDealtEqualsResisted.isEnabled());
+            case 12 -> enableChallenge("Only Hotbar", player);
+            case 14 -> enableChallenge("Random Effect", player);
+            case 16 -> enableChallenge("Damage Dealt = Damage Taken", player);
         }
 
         return true;
+    }
+
+    public void enableChallenge(String name, Player player) {
+
+        if (Main.getInstance().getTimer().isRunning()) {
+            player.sendMessage(Main.getInstance().prefix + ChatColor.RED + "challenges can only be enabled when timer is paused!");
+            return;
+        }
+
+        Challenge challenge = ChallengeManager.getChallenge(name);
+
+        if (challenge == null) {
+            player.sendMessage(Main.getInstance().prefix + ChatColor.RED + "this challenge doesn't exist!");
+            return;
+        }
+
+        if (!challenge.isEnabled()) {
+            ChallengeManager.enableChallenge(challenge);
+            Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.GREEN + challenge.getTitle() + "Challenge has been enabled!");
+        } else {
+            ChallengeManager.disableChallenge(challenge);
+            Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.RED + challenge.getTitle() + " Challenge has been disabled!");
+        }
+
     }
 
     public static Inventory getInventory(Player player) {

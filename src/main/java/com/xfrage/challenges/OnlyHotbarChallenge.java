@@ -2,47 +2,47 @@ package com.xfrage.challenges;
 
 import com.xfrage.Main;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class OnlyHotbarChallenge {
+public class OnlyHotbarChallenge extends Challenge implements Listener {
 
-    private static boolean enabled = false;
-    private static final String title = "Only Hotbar";
-
-    public static boolean isEnabled() {
-        return enabled;
+    public OnlyHotbarChallenge(String title) {
+        super("Only Hotbar");
     }
 
-    public static void setEnabled(boolean enabled) {
-        OnlyHotbarChallenge.enabled = enabled;
-
-        if (enabled) startChallenge();
-        else stopChallenge();
-
-    }
-
-    public static void startChallenge() {
-        Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.GREEN + "Only Hotbar Challenge has been enabled!");
-
+    @Override
+    public void startChallenge() {
+        Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
         for (Player p : Bukkit.getOnlinePlayers()) {
             for (int i = 9; i <= 35; i++) {
                 p.getInventory().setItem(i, new ItemStack(Material.BARRIER));
             }
         }
-        Main.publicChallenges.add(title);
 
     }
 
-    public static void stopChallenge() {
-        Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.RED + "Only Hotbar Challenge has been disabled!");
+    @Override
+    public  void stopChallenge() {
+        InventoryClickEvent.getHandlerList().unregister(this);
         for (Player p : Bukkit.getOnlinePlayers()) {
             for (int i = 9; i <= 35; i++) {
                 p.getInventory().setItem(i, new ItemStack(Material.AIR));
             }
         }
-        Main.publicChallenges.remove(title);
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (!isEnabled()) return;
+
+        if (event.getSlot() > 8) { // hotbar ausgenommen
+            event.setCancelled(true);
+        }
+
     }
 }

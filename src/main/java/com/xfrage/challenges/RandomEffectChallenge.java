@@ -10,38 +10,36 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Random;
 
-public class RandomEffectChallenge {
+public class RandomEffectChallenge extends Challenge{
 
-    private static boolean enabled = false;
-    private static int time;
-    private static BukkitRunnable task;
-    private static PotionEffect effect;
-    private static int amplifier = 0;
+    private static String title = "Random Effect";
 
-    public static void setEnabled(boolean enabled, int seconds) {
-        RandomEffectChallenge.enabled = enabled;
-        RandomEffectChallenge.time = seconds;
+    private int time = 30;
+    private BukkitRunnable task;
+    private PotionEffect effect;
+    private int amplifier = 0;
 
-        if (enabled) {
-            generateRandomEffect(time);
-            broadcastEffect();
-            start(time);
-            Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.GREEN + "Random Effect Challenge has been enabled!");
-        } else {
-            stop();
-            Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.RED + "Random Effect Challenge has been disabled!");
-        }
+    public RandomEffectChallenge() {
+        super("Random Effect");
     }
 
-    public static boolean isEnabled() {
-        return enabled;
+    @Override
+    public void startChallenge() {
+        generateRandomEffect();
+        broadcastEffect();
+        start(time);
     }
 
-    public static void generateRandomEffect(int seconds) {
+    @Override
+    public void stopChallenge() {
+        stop();
+    }
+
+    public void generateRandomEffect() {
         Random random = new Random();
         int x = random.nextInt(1, 35);
         int amp = random.nextInt(1, 5);
-        int dur = (seconds + 1) * 20;
+        int dur = 620;
 
         if (x == 13 && amp == 5) amp = 4; // instant damage 5 wäre instant kill
 
@@ -84,15 +82,15 @@ public class RandomEffectChallenge {
 
     }
 
-    public static void giveAllPlayersEffect(PotionEffect effect, int amp) {
+    public void giveAllPlayersEffect(PotionEffect effect, int amp) {
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.addPotionEffect(effect);
         }
-        RandomEffectChallenge.effect = effect;
-        RandomEffectChallenge.amplifier = amp;
+        this.effect = effect;
+        this.amplifier = amp;
     }
 
-    private static void start(int seconds) {
+    private void start(int seconds) {
         stop(); // beendet alten Timer, damit immer maximal einer läuft
         time = seconds;
 
@@ -106,7 +104,7 @@ public class RandomEffectChallenge {
 
                 if (time <= 0) {
                     // HIER: random Effekt ausführen
-                    generateRandomEffect(seconds);
+                    generateRandomEffect();
                     time = seconds; // bei getTime() == 0 -> auf 10 setzen
                     broadcastEffect();
                     return;
@@ -118,11 +116,11 @@ public class RandomEffectChallenge {
         task.runTaskTimer(Main.getInstance(), 0, 20);
     }
 
-    public static void broadcastEffect() {
+    public void broadcastEffect() {
         Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.GREEN + "next effect: " + effect.getType().getName() + " " + amplifier);
     }
 
-    private static void stop() {
+    private void stop() {
         if (task != null) {
             task.cancel();
             task = null;
