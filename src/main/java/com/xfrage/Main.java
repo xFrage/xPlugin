@@ -1,6 +1,10 @@
 package com.xfrage;
 
 import com.xfrage.challenges.*;
+import com.xfrage.challenges.types.ChunkDecayChallenge;
+import com.xfrage.challenges.types.DamageDealtDamageTakenChallenge;
+import com.xfrage.challenges.types.OnlyHotbarChallenge;
+import com.xfrage.challenges.types.RandomEffectChallenge;
 import com.xfrage.commands.ResetPlayersCommand;
 import com.xfrage.createWorld.CreateWorldCommand;
 import com.xfrage.createWorld.CreateWorldTabCompleter;
@@ -80,7 +84,8 @@ public final class Main extends JavaPlugin {
     public void registerChallenges() {
         ChallengeManager.register(new RandomEffectChallenge("Random Effect"));
         ChallengeManager.register(new OnlyHotbarChallenge("Only Hotbar"));
-        ChallengeManager.register(new DeleteChunkWalkChallenge("Chunk Decay"));
+        ChallengeManager.register(new ChunkDecayChallenge("Chunk Decay"));
+        ChallengeManager.register(new DamageDealtDamageTakenChallenge("Damage Dealt = Damage Taken"));
 
         ChallengeManager.updateChallenges();
     }

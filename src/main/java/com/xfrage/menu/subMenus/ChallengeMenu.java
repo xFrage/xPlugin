@@ -32,9 +32,24 @@ public class ChallengeMenu implements Listener {
             case 12 -> enableChallenge("Only Hotbar", player);
             case 14 -> enableChallenge("Random Effect", player);
             case 16 -> enableChallenge("Chunk Decay", player);
+            case 28 -> enableChallenge("Damage Dealt = Damage Taken", player);
         }
 
         return true;
+    }
+
+    public static Inventory getInventory(Player player) {
+        Inventory challengeInv = Bukkit.createInventory(player, 9*6, challengeInvName);
+
+        // init inventory
+
+        challengeInv.setItem(10, Menu.getItem(new ItemStack(Material.APPLE), "max health", "configure maximum player health"));
+        challengeInv.setItem(12, Menu.getItem(new ItemStack(Material.BARRIER), "only hotbar", "enable/disable only hotbar challenge"));
+        challengeInv.setItem(14, Menu.getItem(new ItemStack(Material.POTION), "random effect", "enable/disable random effect challenge"));
+        challengeInv.setItem(16, Menu.getItem(new ItemStack(Material.GRASS_BLOCK), "delete chunk walk", "fully delete chunk from world after player left"));
+        challengeInv.setItem(28, Menu.getItem(new ItemStack(Material.GOLDEN_AXE), "damage dealt = damage taken", "player takes exactly the amount of damage they deal"));
+
+        return challengeInv;
     }
 
     public void enableChallenge(String name, Player player) {
@@ -61,17 +76,5 @@ public class ChallengeMenu implements Listener {
 
     }
 
-    public static Inventory getInventory(Player player) {
-        Inventory challengeInv = Bukkit.createInventory(player, 9*6, challengeInvName);
-
-        // init inventory
-
-        challengeInv.setItem(10, Menu.getItem(new ItemStack(Material.APPLE), "max health", "configure maximum player health"));
-        challengeInv.setItem(12, Menu.getItem(new ItemStack(Material.BARRIER), "only hotbar", "enable/disable only hotbar challenge"));
-        challengeInv.setItem(14, Menu.getItem(new ItemStack(Material.POTION), "random effect", "enable/disable random effect challenge"));
-        challengeInv.setItem(16, Menu.getItem(new ItemStack(Material.GRASS_BLOCK), "delete chunk walk", "fully delete chunk from world after player left"));
-
-        return challengeInv;
-    }
 
 }

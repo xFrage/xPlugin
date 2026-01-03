@@ -1,6 +1,7 @@
-package com.xfrage.challenges;
+package com.xfrage.challenges.types;
 
 import com.xfrage.Main;
+import com.xfrage.challenges.Challenge;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -10,7 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Random;
 
-public class RandomEffectChallenge extends Challenge{
+public class RandomEffectChallenge extends Challenge {
 
     private int time = 30;
     private BukkitRunnable task;

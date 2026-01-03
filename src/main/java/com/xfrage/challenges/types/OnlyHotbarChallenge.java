@@ -1,6 +1,7 @@
-package com.xfrage.challenges;
+package com.xfrage.challenges.types;
 
 import com.xfrage.Main;
+import com.xfrage.challenges.Challenge;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

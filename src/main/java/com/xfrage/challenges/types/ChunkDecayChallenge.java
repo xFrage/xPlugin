@@ -1,6 +1,7 @@
-package com.xfrage.challenges;
+package com.xfrage.challenges.types;
 
 import com.xfrage.Main;
+import com.xfrage.challenges.Challenge;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
@@ -11,11 +12,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class DeleteChunkWalkChallenge extends Challenge implements Listener{
+public class ChunkDecayChallenge extends Challenge implements Listener{
 
     private Chunk lastChunk;
 
-    public DeleteChunkWalkChallenge(String title) {
+    public ChunkDecayChallenge(String title) {
         super(title);
     }
 
