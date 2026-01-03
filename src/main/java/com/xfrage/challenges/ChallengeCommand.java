@@ -11,7 +11,7 @@ public class ChallengeCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
 
         if (args.length == 0) { // "/challenge"
-            if (ChallengeManager.getChallenges().isEmpty()) {
+            if (ChallengeManager.getActiveChallenges().isEmpty()) {
                 sender.sendMessage(Main.getInstance().prefix + ChatColor.RED + "there are no challenges enabled right now");
                 return false;
             }
@@ -21,7 +21,10 @@ public class ChallengeCommand implements CommandExecutor {
         }
 
         switch(args[0]) {
-            case "disable" -> ChallengeManager.pauseAllChallenges();
+            case "disable": {
+                ChallengeManager.pauseAllChallenges();
+                sender.sendMessage(Main.getInstance().prefix + ChatColor.GREEN + "all challenges have been disabled!");
+            }
         }
 
         return true;

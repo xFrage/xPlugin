@@ -31,7 +31,7 @@ public class ChallengeMenu implements Listener {
             case 10 -> player.openInventory(MaxHealthMenu.getInventory(player));
             case 12 -> enableChallenge("Only Hotbar", player);
             case 14 -> enableChallenge("Random Effect", player);
-            case 16 -> enableChallenge("Damage Dealt = Damage Taken", player);
+            case 16 -> enableChallenge("Chunk Decay", player);
         }
 
         return true;
@@ -40,7 +40,7 @@ public class ChallengeMenu implements Listener {
     public void enableChallenge(String name, Player player) {
 
         if (Main.getInstance().getTimer().isRunning()) {
-            player.sendMessage(Main.getInstance().prefix + ChatColor.RED + "challenges can only be enabled when timer is paused!");
+            player.sendMessage(Main.getInstance().prefix + ChatColor.RED + "challenges can only be enabled/disabled when timer is paused!");
             return;
         }
 
@@ -51,7 +51,7 @@ public class ChallengeMenu implements Listener {
             return;
         }
 
-        if (!challenge.isEnabled()) {
+        if (!ChallengeManager.getChallengeActive(name)) {
             ChallengeManager.enableChallenge(challenge);
             Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.GREEN + challenge.getTitle() + "Challenge has been enabled!");
         } else {
@@ -69,6 +69,7 @@ public class ChallengeMenu implements Listener {
         challengeInv.setItem(10, Menu.getItem(new ItemStack(Material.APPLE), "max health", "configure maximum player health"));
         challengeInv.setItem(12, Menu.getItem(new ItemStack(Material.BARRIER), "only hotbar", "enable/disable only hotbar challenge"));
         challengeInv.setItem(14, Menu.getItem(new ItemStack(Material.POTION), "random effect", "enable/disable random effect challenge"));
+        challengeInv.setItem(16, Menu.getItem(new ItemStack(Material.GRASS_BLOCK), "delete chunk walk", "fully delete chunk from world after player left"));
 
         return challengeInv;
     }

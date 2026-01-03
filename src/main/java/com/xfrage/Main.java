@@ -78,8 +78,11 @@ public final class Main extends JavaPlugin {
      */
 
     public void registerChallenges() {
-        ChallengeManager.register(new RandomEffectChallenge());
+        ChallengeManager.register(new RandomEffectChallenge("Random Effect"));
         ChallengeManager.register(new OnlyHotbarChallenge("Only Hotbar"));
+        ChallengeManager.register(new DeleteChunkWalkChallenge("Chunk Decay"));
+
+        ChallengeManager.updateChallenges();
     }
 
     public void registerTimer() {

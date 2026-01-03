@@ -12,15 +12,13 @@ import java.util.Random;
 
 public class RandomEffectChallenge extends Challenge{
 
-    private static String title = "Random Effect";
-
     private int time = 30;
     private BukkitRunnable task;
     private PotionEffect effect;
     private int amplifier = 0;
 
-    public RandomEffectChallenge() {
-        super("Random Effect");
+    public RandomEffectChallenge(String title) {
+        super(title);
     }
 
     @Override

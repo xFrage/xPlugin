@@ -1,6 +1,7 @@
 package com.xfrage.listeners;
 
 import com.xfrage.Main;
+import com.xfrage.challenges.ChallengeManager;
 import com.xfrage.timer.Timer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -21,6 +22,8 @@ public class PlayerDeathListener implements Listener {
             timer.setRunning(false);
             Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.RED + "Challenge failed!");
             Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.RED + "wasted time: " + timer.timeNotation(timer.getTime()));
+
+            ChallengeManager.pauseAllChallenges();
 
         return true;
     }

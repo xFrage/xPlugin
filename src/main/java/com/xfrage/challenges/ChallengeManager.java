@@ -16,14 +16,14 @@ public class ChallengeManager {
 
     public static void enableChallenge(Challenge challenge) {
         if (!activeChallenges.contains(challenge)) {
-            challenge.setEnabled(true);
             activeChallenges.add(challenge);
+            updateChallenges();
         }
     }
 
     public static void disableChallenge(Challenge challenge) {
-        challenge.setEnabled(false);
         activeChallenges.remove(challenge);
+        updateChallenges();
     }
 
     public static void resumeAllChallenges() {
@@ -38,6 +38,14 @@ public class ChallengeManager {
         }
     }
 
+    public static void updateChallenges() {
+        if (Main.getInstance().getTimer().isRunning()) { // timer is running
+            resumeAllChallenges();
+        } else { // timer is paused
+            pauseAllChallenges();
+        }
+    }
+
     public static List<Challenge> getChallenges() {
         return challenges;
     }
@@ -49,9 +57,18 @@ public class ChallengeManager {
     public static Challenge getChallenge(String name) {
         for (int i = 0; i < challenges.size(); i++) {
             if (challenges.get(i).getTitle().equals(name)) {
-                return activeChallenges.get(i);
+                return challenges.get(i);
             }
         }
         return null;
+    }
+
+    public static boolean getChallengeActive(String name) {
+        for (Challenge c : activeChallenges) {
+            if (c.getTitle().equals(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

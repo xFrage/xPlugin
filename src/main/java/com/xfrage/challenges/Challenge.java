@@ -1,7 +1,5 @@
 package com.xfrage.challenges;
 
-import com.xfrage.Main;
-
 public abstract class Challenge {
 
     protected boolean enabled = false;
@@ -18,10 +16,7 @@ public abstract class Challenge {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
 
-        if (Main.getInstance().getTimer().isRunning()) { // challenge wird während /timer resume aktiviert
-            if (enabled) startChallenge();
-        }
-
+        if (enabled) startChallenge();
         else stopChallenge(); //
     }
 
