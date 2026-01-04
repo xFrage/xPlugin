@@ -33,6 +33,7 @@ public class ChallengeMenu implements Listener {
             case 14 -> enableChallenge("Random Effect", player);
             case 16 -> enableChallenge("Chunk Decay", player);
             case 28 -> enableChallenge("Damage Dealt = Damage Taken", player);
+            case 30 -> enableChallenge("No Item Pickup", player);
         }
 
         return true;
@@ -48,6 +49,7 @@ public class ChallengeMenu implements Listener {
         challengeInv.setItem(14, Menu.getItem(new ItemStack(Material.POTION), "random effect", "enable/disable random effect challenge"));
         challengeInv.setItem(16, Menu.getItem(new ItemStack(Material.GRASS_BLOCK), "delete chunk walk", "fully delete chunk from world after player left"));
         challengeInv.setItem(28, Menu.getItem(new ItemStack(Material.GOLDEN_AXE), "damage dealt = damage taken", "player takes exactly the amount of damage they deal"));
+        challengeInv.setItem(30, Menu.getItem(new ItemStack(Material.WHEAT_SEEDS), "no item pickup", "enable/disable being able to pick up items"));
 
         return challengeInv;
     }
