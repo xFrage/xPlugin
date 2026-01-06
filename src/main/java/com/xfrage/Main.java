@@ -50,6 +50,8 @@ public final class Main extends JavaPlugin {
         registerListeners();
         registerChallenges();
 
+        resetScoreboards();
+
     }
 
     @Override
@@ -124,6 +126,10 @@ public final class Main extends JavaPlugin {
     public void registerTabCompleters() {
         Objects.requireNonNull(getCommand("timer")).setTabCompleter(new TimerTabCompleter());
         Objects.requireNonNull(getCommand("createworld")).setTabCompleter(new CreateWorldTabCompleter());
+    }
+
+    public void resetScoreboards() {
+        ForceProximityChallenge.resetScoreboards();
     }
 
     public void loadWorlds() {

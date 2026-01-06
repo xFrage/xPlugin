@@ -2,6 +2,7 @@ package com.xfrage.challenges.types;
 
 import com.xfrage.Main;
 import com.xfrage.challenges.Challenge;
+import com.xfrage.listeners.PlayerDeathListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -15,7 +16,6 @@ import java.util.*;
 public class ForceProximityChallenge extends Challenge {
 
     private BukkitRunnable task;
-    private static double MAX_DISTANCE = 100.0;
 
     public ForceProximityChallenge(String title) {
         super(title);
@@ -40,17 +40,41 @@ public class ForceProximityChallenge extends Challenge {
             @Override
             public void run() {
                 if (!isEnabled()) return;
-                Collection<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+                List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
 
-                if (players.size() < 2) return; // only 1 player is online
+                if (players.size() < 2) return;
 
                 for (Player p : players) {
                     updateScoreboard(p);
                 }
 
+                boolean failed = false;
+                double maxDistFound = 0;
+
+                outer:
+                for (int i = 0; i < players.size(); i++) {
+                    for (int j = i + 1; j < players.size(); j++) {
+
+                        Player p1 = players.get(i);
+                        Player p2 = players.get(j);
+
+                        if (!p1.getWorld().equals(p2.getWorld())) continue;
+
+                        double dist = p1.getLocation().distance(p2.getLocation());
+
+                        if (dist > 20) {
+                            failed = true;
+                            maxDistFound = Math.max(maxDistFound, dist);
+                            break outer; // ⬅️ WICHTIG
+                        }
+                    }
+                }
+
+                if (failed) PlayerDeathListener.failChallenge();
+
             }
         };
-        task.runTaskTimer(Main.getInstance(), 0, 20); // 1 second
+        task.runTaskTimer(Main.getInstance(), 0, 1); // 1 second
     }
 
     private void stopDistanceCheck() {
@@ -88,17 +112,19 @@ public class ForceProximityChallenge extends Challenge {
 
                     obj.getScore(line).setScore(distance);
 
-                    if (distance > 100) stopChallenge();
-
                 });
         player.setScoreboard(board);
     }
 
-    private void resetScoreboards() {
+    public static void resetScoreboards() {
         Scoreboard main = Bukkit.getScoreboardManager().getMainScoreboard();
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.setScoreboard(main);
         }
+    }
+
+    private void warnPlayer(Player p1, Player p2) {
+
     }
 
     private Map<Player, Double> getDistances(Player player) {

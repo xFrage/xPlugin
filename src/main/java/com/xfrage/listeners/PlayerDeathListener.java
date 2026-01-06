@@ -15,17 +15,21 @@ public class PlayerDeathListener implements Listener {
 
     @EventHandler
     public boolean onPlayerDeath(PlayerDeathEvent event) {
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                p.setGameMode(GameMode.SPECTATOR);
-            }
-            Timer timer = Main.getInstance().getTimer();
-            timer.setRunning(false);
-            Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.RED + "Challenge failed!");
-            Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.RED + "wasted time: " + timer.timeNotation(timer.getTime()));
-
-            ChallengeManager.pauseAllChallenges();
-
+        failChallenge();
         return true;
+    }
+
+    public static void failChallenge() {
+
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            p.setGameMode(GameMode.SPECTATOR);
+        }
+        Timer timer = Main.getInstance().getTimer();
+        timer.setRunning(false);
+        Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.RED + "Challenge failed!");
+        Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.RED + "wasted time: " + timer.timeNotation(timer.getTime()));
+
+        ChallengeManager.pauseAllChallenges();
     }
 
 }
