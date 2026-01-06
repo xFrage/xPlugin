@@ -4,16 +4,23 @@ import com.xfrage.Main;
 import com.xfrage.challenges.Challenge;
 import com.xfrage.listeners.PlayerDeathListener;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.util.Vector;
 
 import java.util.*;
 
 public class ForceProximityChallenge extends Challenge {
+
+    private double maxDist = 20.0;
+    private double warnDist = maxDist * 0.8;
 
     private BukkitRunnable task;
 
@@ -37,6 +44,7 @@ public class ForceProximityChallenge extends Challenge {
     // check distance of every player to every other player every second (20 ticks)
     private void startDistanceCheck() {
         task = new BukkitRunnable() {
+
             @Override
             public void run() {
                 if (!isEnabled()) return;
@@ -49,7 +57,6 @@ public class ForceProximityChallenge extends Challenge {
                 }
 
                 boolean failed = false;
-                double maxDistFound = 0;
 
                 outer:
                 for (int i = 0; i < players.size(); i++) {
@@ -62,11 +69,14 @@ public class ForceProximityChallenge extends Challenge {
 
                         double dist = p1.getLocation().distance(p2.getLocation());
 
-                        if (dist > 20) {
-                            failed = true;
-                            maxDistFound = Math.max(maxDistFound, dist);
-                            break outer; // ⬅️ WICHTIG
+                        if (dist > warnDist) {
+                            warnPlayer(p1, p2);
+                            if (dist > maxDist) {
+                                failed = true;
+                                break outer;
+                            }
                         }
+
                     }
                 }
 
@@ -124,6 +134,32 @@ public class ForceProximityChallenge extends Challenge {
     }
 
     private void warnPlayer(Player p1, Player p2) {
+        spawnParticlesBetween(p1, p2);
+    }
+
+    private void spawnParticlesBetween(Player p1, Player p2) {
+
+        Location from = p1.getLocation();
+        Location to = p2.getLocation();
+
+        Vector direction = to.toVector().subtract(from.toVector());
+        double distance = from.distance(to);
+        direction.normalize();
+
+        double step = 1.0;
+        Vector stepVector = direction.multiply(step);
+
+        Location current = from.clone();
+
+        for (double d = 0; d < distance; d += step) {
+            p1.getWorld().spawnParticle(
+                    Particle.DUST,
+                    current,
+                    1,
+                    new Particle.DustOptions(Color.RED, 1.2f)
+            );
+            current.add(stepVector);
+        }
 
     }
 

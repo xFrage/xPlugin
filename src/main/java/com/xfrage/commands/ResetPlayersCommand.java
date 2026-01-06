@@ -64,6 +64,7 @@ public class ResetPlayersCommand implements CommandExecutor {
 
     public void resetWorld(World world) {
         world.setTime(0);
+        world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
         world.setStorm(false);
         world.setThundering(false);
         Bukkit.getLogger().info("world '" + world.getName() + "' has been reset!");
