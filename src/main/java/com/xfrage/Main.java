@@ -82,6 +82,7 @@ public final class Main extends JavaPlugin {
         ChallengeManager.register(new ChunkDecayChallenge("Chunk Decay"));
         ChallengeManager.register(new DamageDealtDamageTakenChallenge("Damage Dealt = Damage Taken"));
         ChallengeManager.register(new NoItemPickupChallenge("No Item Pickup"));
+        ChallengeManager.register(new ForceProximityChallenge("Force Proximity"));
 
         ChallengeManager.updateChallenges();
     }

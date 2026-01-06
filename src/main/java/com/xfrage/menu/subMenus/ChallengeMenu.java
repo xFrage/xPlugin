@@ -7,7 +7,6 @@ import com.xfrage.menu.subMenus.challengeMenus.MaxHealthMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -34,6 +33,7 @@ public class ChallengeMenu implements Listener {
             case 16 -> enableChallenge("Chunk Decay", player);
             case 28 -> enableChallenge("Damage Dealt = Damage Taken", player);
             case 30 -> enableChallenge("No Item Pickup", player);
+            case 32 -> enableChallenge("Force Proximity", player);
         }
 
         return true;
@@ -50,6 +50,7 @@ public class ChallengeMenu implements Listener {
         challengeInv.setItem(16, Menu.getItem(new ItemStack(Material.GRASS_BLOCK), "delete chunk walk", "fully delete chunk from world after player left"));
         challengeInv.setItem(28, Menu.getItem(new ItemStack(Material.GOLDEN_AXE), "damage dealt = damage taken", "player takes exactly the amount of damage they deal"));
         challengeInv.setItem(30, Menu.getItem(new ItemStack(Material.WHEAT_SEEDS), "no item pickup", "enable/disable being able to pick up items"));
+        challengeInv.setItem(32, Menu.getItem(new ItemStack(Material.COMPASS), "force proximity", "players must be within a distance of 100 blocks between each other"));
 
         return challengeInv;
     }
@@ -70,7 +71,7 @@ public class ChallengeMenu implements Listener {
 
         if (!ChallengeManager.getChallengeActive(name)) {
             ChallengeManager.enableChallenge(challenge);
-            Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.GREEN + challenge.getTitle() + "Challenge has been enabled!");
+            Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.GREEN + challenge.getTitle() + " Challenge has been enabled!");
         } else {
             ChallengeManager.disableChallenge(challenge);
             Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.RED + challenge.getTitle() + " Challenge has been disabled!");
