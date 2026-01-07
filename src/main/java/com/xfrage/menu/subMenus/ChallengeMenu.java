@@ -34,6 +34,7 @@ public class ChallengeMenu implements Listener {
             case 28 -> enableChallenge("Damage Dealt = Damage Taken", player);
             case 30 -> enableChallenge("No Item Pickup", player);
             case 32 -> enableChallenge("Force Proximity", player);
+            case 34 -> enableChallenge("Mob Health x 100", player);
         }
 
         return true;
@@ -51,6 +52,7 @@ public class ChallengeMenu implements Listener {
         challengeInv.setItem(28, Menu.getItem(new ItemStack(Material.GOLDEN_AXE), "damage dealt = damage taken", "player takes exactly the amount of damage they deal"));
         challengeInv.setItem(30, Menu.getItem(new ItemStack(Material.WHEAT_SEEDS), "no item pickup", "enable/disable being able to pick up items"));
         challengeInv.setItem(32, Menu.getItem(new ItemStack(Material.COMPASS), "force proximity", "players must be within a distance of 100 blocks between each other"));
+        challengeInv.setItem(34, Menu.getItem(new ItemStack(Material.ENCHANTED_GOLDEN_APPLE), "custom mob health", "mobs have 100 times more HP"));
 
         return challengeInv;
     }

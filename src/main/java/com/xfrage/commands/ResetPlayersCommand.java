@@ -37,7 +37,7 @@ public class ResetPlayersCommand implements CommandExecutor {
 
             // saturation
             p.setFoodLevel(20);
-            p.setSaturation(20);
+            p.setSaturation(5);
 
             // level
             p.setLevel(0);

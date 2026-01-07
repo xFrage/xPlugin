@@ -28,29 +28,29 @@ public final class Main extends JavaPlugin {
 
     private static Main instance;
     private Timer timer;
-    private RandomEffectChallenge secTimer;
 
     public String prefix = "[xPlugin] ";
 
     @Override
     public void onEnable() {
 
+        // load all world folders
+        loadWorlds();
+
+        // register
+        registerTimer(); // set time (from timer.txt)
+        registerCommands();
+        registerTabCompleters();
+        registerListeners();
+        registerChallenges(); // add challenges to ChallengeManager.challenges
+
+        resetScoreboards();
+
         getLogger().info("--------------------");
         getLogger().info("--------------------");
         getLogger().info("xPlugin initialised");
         getLogger().info("--------------------");
         getLogger().info("--------------------");
-
-        loadWorlds();
-
-        registerTimer(); // set time (from timer.txt)
-
-        registerCommands();
-        registerTabCompleters();
-        registerListeners();
-        registerChallenges();
-
-        resetScoreboards();
 
     }
 
@@ -63,14 +63,11 @@ public final class Main extends JavaPlugin {
     Ideen:
 
     x Sekunden still stehen = damage
-    Springen verboten / springen = damage
-    verteilter damage = erhaltener damage
     damage verteilen = 50 blöcke nach oben teleportiert
 
     mobs haben x mal so viel health / machen x mal so viel damage
 
     chunk wechsel = damage
-    chunk/block wechsel = chunk/block wird von -64 bis 320 gelöscht
 
     randomizer
 
@@ -85,6 +82,7 @@ public final class Main extends JavaPlugin {
         ChallengeManager.register(new DamageDealtDamageTakenChallenge("Damage Dealt = Damage Taken"));
         ChallengeManager.register(new NoItemPickupChallenge("No Item Pickup"));
         ChallengeManager.register(new ForceProximityChallenge("Force Proximity"));
+        ChallengeManager.register(new MobHealthChallenge("Mob Health x 100"));
 
         ChallengeManager.updateChallenges();
     }
@@ -144,14 +142,14 @@ public final class Main extends JavaPlugin {
 
             String worldName = file.getName();
 
-            // Skip default world (die lädt Bukkit selbst)
+            // skip default (already loaded by bukkit)
             if (Bukkit.getWorld(worldName) != null) continue;
 
             Bukkit.getLogger().info("loading world: " + worldName);
 
             WorldCreator creator = new WorldCreator(worldName);
 
-            // Umgebung bestimmen
+            // define environment
             if (worldName.endsWith("_nether")) {
                 creator.environment(World.Environment.NETHER);
             } else if (worldName.endsWith("_the_end")) {

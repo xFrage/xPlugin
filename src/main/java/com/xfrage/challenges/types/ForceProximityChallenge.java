@@ -70,7 +70,7 @@ public class ForceProximityChallenge extends Challenge {
                         double dist = p1.getLocation().distance(p2.getLocation());
 
                         if (dist > warnDist) {
-                            warnPlayer(p1, p2);
+                            spawnParticlesBetween(p1, p2);
                             if (dist > maxDist) {
                                 failed = true;
                                 break outer;
@@ -84,7 +84,7 @@ public class ForceProximityChallenge extends Challenge {
 
             }
         };
-        task.runTaskTimer(Main.getInstance(), 0, 1); // 1 second
+        task.runTaskTimer(Main.getInstance(), 0, 1); // once every 50ms (1/20s)
     }
 
     private void stopDistanceCheck() {
@@ -133,10 +133,7 @@ public class ForceProximityChallenge extends Challenge {
         }
     }
 
-    private void warnPlayer(Player p1, Player p2) {
-        spawnParticlesBetween(p1, p2);
-    }
-
+    // particles if dist > 80% max
     private void spawnParticlesBetween(Player p1, Player p2) {
 
         Location from = p1.getLocation();
