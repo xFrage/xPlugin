@@ -129,19 +129,19 @@ public class CreateWorldCommand implements CommandExecutor {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.teleport(spawn);
             }
-            sender.sendMessage(Main.getInstance().prefix + ChatColor.GREEN + "Teleported everyone to " + args[1]);
+            sender.sendMessage(Main.getInstance().prefix + ChatColor.GREEN + "teleported everyone to " + args[1]);
             return;
         }
 
         Player targetPlayer = Bukkit.getPlayerExact(target);
         if (targetPlayer == null) {
-            sender.sendMessage(Main.getInstance().prefix + ChatColor.RED + "Player '" + target + "' not found!");
+            sender.sendMessage(Main.getInstance().prefix + ChatColor.RED + "player '" + target + "' not found!");
             return;
         }
 
         targetPlayer.teleport(spawn);
         sender.sendMessage(Main.getInstance().prefix + ChatColor.GREEN +
-                "Teleported " + targetPlayer.getName() + " to " + args[1]);
+                "teleported " + targetPlayer.getName() + " to " + args[1]);
     }
 
     public void deleteWorlds(String baseName, CommandSender sender) {
