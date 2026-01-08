@@ -16,6 +16,7 @@ import com.xfrage.timer.Timer;
 import com.xfrage.timer.TimerCommand;
 import com.xfrage.timer.TimerTabCompleter;
 import org.bukkit.Bukkit;
+import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.plugin.PluginManager;
@@ -159,8 +160,17 @@ public final class Main extends JavaPlugin {
             }
 
             Bukkit.createWorld(creator);
+
+            // disable day/night cycle
+            if (!getTimer().isRunning()) {
+                setDoDaylightCycle(Objects.requireNonNull(Bukkit.getWorld(worldName)), false);
+            }
         }
 
+    }
+
+    public static void setDoDaylightCycle(World world, boolean bool) {
+        world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, bool);
     }
 
 

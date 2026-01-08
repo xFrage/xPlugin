@@ -32,7 +32,7 @@ public class CreateWorldCommand implements CommandExecutor {
                 createWorlds(args[1], sender);
                 break;
             case "tp": // teleport all players into world set
-                tpWorld(args[1], sender);
+                tpWorld(args, sender);
                 break;
             case "delete": // delete world set
                 deleteWorlds(args[1], sender);
@@ -79,30 +79,69 @@ public class CreateWorldCommand implements CommandExecutor {
         sender.sendMessage(Main.getInstance().prefix + ChatColor.GREEN + "world-set " + baseName + " has been created!");
     }
 
-    public void tpWorld(String baseName, CommandSender sender) {
-        World world = Bukkit.getWorld(baseName);
-        if (Bukkit.getWorld(baseName) == null) {
-            sender.sendMessage(Main.getInstance().prefix + ChatColor.RED + "world-set " + baseName + " does not exist! try /cw list");
-            return;
-        }
+    public Location getSpawnLoc(String worldName, CommandSender sender) {
+        World world = Bukkit.getWorld(worldName);
+        if (Bukkit.getWorld(worldName) == null) {
+            sender.sendMessage(Main.getInstance().prefix + ChatColor.RED + "world-set " + worldName + " does not exist! try /cw list");
+            throw new RuntimeException();
+        } // world does not exist
+
         int x = (int) Objects.requireNonNull(world).getSpawnLocation().getX();
         int z = (int) Objects.requireNonNull(world).getSpawnLocation().getZ();
         double y = Objects.requireNonNull(world).getHighestBlockYAt(x, z) + 1;
-        Location targetLoc = new Location(world, x, y, z);
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            p.teleport(targetLoc);
-            p.getInventory().clear();
-        }
 
-        if (world.getName().equals("world")) {
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                p.getInventory().addItem(Menu.getItem(new ItemStack(Material.COMPASS), "menu", ""));
-            }
-            Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.GREEN + "all players have been teleported back!");
+        return new Location(world, x, y, z);
+    }
+
+    public void tpWorld(String[] args, CommandSender sender) {
+
+        // args = /cw [tp, world, everyone]
+        //             0     1        2
+
+        if (args.length < 2 || args.length > 3) {
+            sendUsage(sender);
             return;
         }
 
-        Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.GREEN + "all players have been teleported to " + baseName + "!");
+        Location spawn = getSpawnLoc(args[1], sender);
+
+        if (spawn == null) {
+            sender.sendMessage(Main.getInstance().prefix + ChatColor.RED + "world '" + args[1] + "' not found!");
+            return;
+        } // world does not exist
+
+        // /cw tp world
+        if (args.length == 2) {
+
+            if (!(sender instanceof Player player)) {
+                sender.sendMessage(Main.getInstance().prefix + ChatColor.RED + "only players can use this command!");
+                return;
+            }
+
+            player.teleport(spawn);
+            sender.sendMessage(Main.getInstance().prefix + ChatColor.GREEN + "you have been teleported to " + args[1]);
+            return;
+        }
+
+        // /cw tp world everyone/player
+        String target = args[2];
+        if (target.equalsIgnoreCase("everyone")) {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                p.teleport(spawn);
+            }
+            sender.sendMessage(Main.getInstance().prefix + ChatColor.GREEN + "Teleported everyone to " + args[1]);
+            return;
+        }
+
+        Player targetPlayer = Bukkit.getPlayerExact(target);
+        if (targetPlayer == null) {
+            sender.sendMessage(Main.getInstance().prefix + ChatColor.RED + "Player '" + target + "' not found!");
+            return;
+        }
+
+        targetPlayer.teleport(spawn);
+        sender.sendMessage(Main.getInstance().prefix + ChatColor.GREEN +
+                "Teleported " + targetPlayer.getName() + " to " + args[1]);
     }
 
     public void deleteWorlds(String baseName, CommandSender sender) {
@@ -206,7 +245,7 @@ public class CreateWorldCommand implements CommandExecutor {
     }
 
     public void sendUsage(CommandSender sender) {
-        sender.sendMessage(Main.getInstance().prefix + ChatColor.RED + "/cw create <worldName>, /cw tp <worldName>, /cw delete <worldName>, /cw list, /cw current");
+        sender.sendMessage(Main.getInstance().prefix + ChatColor.RED + "/cw create <worldName>, /cw tp <worldName> <player/everyone>, /cw delete <worldName>, /cw list, /cw current");
     }
 
     private void deleteFolder(File path) {
