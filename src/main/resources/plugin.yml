@@ -22,3 +22,5 @@ commands:
     description: use "/resetplayers confirm" to reset all players' XP, advancements, inventory and gamemode (survival). 
       this command is typically used at the start of a new world/challenge, but has to be executed manually to reduce 
       the risk of losing challenge progress.
+  ping:
+    description: use "/ping <player>" to see a player's ping. leave <player> blank to see your own ping.

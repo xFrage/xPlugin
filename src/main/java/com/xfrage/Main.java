@@ -2,6 +2,7 @@ package com.xfrage;
 
 import com.xfrage.challenges.*;
 import com.xfrage.challenges.types.*;
+import com.xfrage.commands.PingCommand;
 import com.xfrage.commands.ResetPlayersCommand;
 import com.xfrage.createWorld.CreateWorldCommand;
 import com.xfrage.createWorld.CreateWorldTabCompleter;
@@ -120,6 +121,7 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("menu")).setExecutor(new Menu());
         Objects.requireNonNull(getCommand("createworld")).setExecutor(new CreateWorldCommand());
         Objects.requireNonNull(getCommand("resetplayers")).setExecutor(new ResetPlayersCommand());
+        Objects.requireNonNull(getCommand("ping")).setExecutor(new PingCommand());
     }
 
     public void registerTabCompleters() {
