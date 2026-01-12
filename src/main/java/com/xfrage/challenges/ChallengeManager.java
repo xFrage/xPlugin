@@ -55,9 +55,9 @@ public class ChallengeManager {
     }
 
     public static Challenge getChallenge(String name) {
-        for (int i = 0; i < challenges.size(); i++) {
-            if (challenges.get(i).getTitle().equals(name)) {
-                return challenges.get(i);
+        for (Challenge challenge : challenges) {
+            if (challenge.getTitle().equals(name)) {
+                return challenge;
             }
         }
         return null;

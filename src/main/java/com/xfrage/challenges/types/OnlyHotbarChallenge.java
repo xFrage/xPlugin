@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
 public class OnlyHotbarChallenge extends Challenge implements Listener {
@@ -41,9 +43,34 @@ public class OnlyHotbarChallenge extends Challenge implements Listener {
     public void onInventoryClick(InventoryClickEvent event) {
         if (!isEnabled()) return;
 
-        if (event.getSlot() > 8) { // hotbar ausgenommen
-            event.setCancelled(true);
+        int slot = event.getSlot();
+
+        // directly inside inventory
+        if (event.getClickedInventory() == event.getView().getBottomInventory()) {
+            if (isNotHotbarSlot(slot)) {
+                event.setCancelled(true);
+                return;
+            }
         }
 
+    }
+
+    @EventHandler
+    public void onInventoryDrag(InventoryDragEvent event) {
+        if (!isEnabled()) return;
+
+        if (event.getView().getTopInventory().getType() == InventoryType.CRAFTING) {
+            for (int rawSlot : event.getRawSlots()) {
+                int convertedSlot = event.getView().convertSlot(rawSlot);
+                if (isNotHotbarSlot(convertedSlot)) {
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+        }
+    }
+
+    private boolean isNotHotbarSlot(int slot) {
+        return slot < 0 || slot > 8;
     }
 }

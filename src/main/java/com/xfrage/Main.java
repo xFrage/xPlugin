@@ -31,13 +31,10 @@ public final class Main extends JavaPlugin {
     private static Main instance;
     private Timer timer;
 
-    public String prefix = "[xPlugin] ";
+    public final String prefix = "[xPlugin] ";
 
     @Override
     public void onEnable() {
-
-        // load all world folders
-        loadWorlds();
 
         // register
         registerTimer(); // set time (from timer.txt)
@@ -45,6 +42,10 @@ public final class Main extends JavaPlugin {
         registerTabCompleters();
         registerListeners();
         registerChallenges(); // add challenges to ChallengeManager.challenges
+
+        // load all world folders
+        // (dependent on timer so load timer first)
+        loadWorlds();
 
         resetScoreboards();
 
@@ -109,7 +110,7 @@ public final class Main extends JavaPlugin {
         pluginManager.registerEvents(new PlayerDeathListener(), this); // player death, timer pause
         pluginManager.registerEvents(new FreeTheEndListener(), this); // challenge done
 
-        pluginManager.registerEvents(new EntityDamageListener(), this); // no damage if timer paused
+        pluginManager.registerEvents(new TimerPauseListener(), this); // no schabernack machen if timer paused
         pluginManager.registerEvents(new PlayerHungerListener(), this); // no hunger loss if timer paused
 
         pluginManager.registerEvents(new PlayerPortalListener(), this); // cw nether/end linking
@@ -174,7 +175,6 @@ public final class Main extends JavaPlugin {
     public static void setDoDaylightCycle(World world, boolean bool) {
         world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, bool);
     }
-
 
     public static Main getInstance() {
         return instance;
