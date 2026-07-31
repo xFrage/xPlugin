@@ -10,6 +10,9 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 
 public class TimerPauseListener implements Listener {
 
@@ -22,6 +25,27 @@ public class TimerPauseListener implements Listener {
             event.setCancelled(true);
         }
 
+        return true;
+    }
+
+    @EventHandler
+    public static boolean onPickUp(EntityTargetLivingEntityEvent event) {
+        if (!timer.isRunning())
+            event.setCancelled(true);
+        return true;
+    }
+
+    @EventHandler
+    public static boolean onDropItem(PlayerDropItemEvent event) {
+        if (!timer.isRunning())
+            event.setCancelled(true);
+        return true;
+    }
+
+    @EventHandler
+    public static boolean onPickUp(EntityPickupItemEvent event) {
+        if (!timer.isRunning())
+            event.setCancelled(true);
         return true;
     }
 

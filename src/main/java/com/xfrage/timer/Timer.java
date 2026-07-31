@@ -50,7 +50,7 @@ public class Timer {
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (!isRunning()) {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, Integer.MAX_VALUE, 200));
+                // player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, Integer.MAX_VALUE, 200));
                 player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED.toString() + ChatColor.BOLD + "timer paused at " + timeNotation(getTime())));
                 continue;
             }

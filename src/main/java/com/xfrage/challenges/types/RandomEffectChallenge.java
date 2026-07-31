@@ -40,7 +40,7 @@ public class RandomEffectChallenge extends Challenge {
         Random random = new Random();
         int x = random.nextInt(1, 31);
         int amp = random.nextInt(1, 5);
-        int dur = 620;
+        int dur = 600;
 
         switch (x) {
             case 1 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.ABSORPTION, dur, amp, true), amp);
@@ -113,7 +113,17 @@ public class RandomEffectChallenge extends Challenge {
     }
 
     public void broadcastEffect() {
-        Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.GREEN + "next effect: " + effect.getType() + " " + amplifier);
+        String key = effect.getType().getTranslationKey();
+        String cleaned = key.replace("effect.minecraft.", "").replace("_", " ");
+        String roman_amp = switch (amplifier) {
+            case 1 -> "I";
+            case 2 -> "II";
+            case 3 -> "III";
+            case 4 -> "IV";
+            case 5 -> "V";
+            default -> "";
+        };
+        Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.GREEN + "next effect: " + cleaned.toUpperCase() + " " + roman_amp);
     }
 
     private void stop() {
