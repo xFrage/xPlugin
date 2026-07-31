@@ -11,6 +11,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Random;
 
+import static org.bukkit.potion.PotionEffectType.ABSORPTION;
+
 public class RandomEffectChallenge extends Challenge {
 
     private int time = 30;
@@ -36,11 +38,9 @@ public class RandomEffectChallenge extends Challenge {
 
     public void generateRandomEffect() {
         Random random = new Random();
-        int x = random.nextInt(1, 35);
+        int x = random.nextInt(1, 31);
         int amp = random.nextInt(1, 5);
         int dur = 620;
-
-        if (x == 13 && amp == 5) amp = 4; // instant damage 5 wäre instant kill
 
         switch (x) {
             case 1 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.ABSORPTION, dur, amp, true), amp);
@@ -59,23 +59,21 @@ public class RandomEffectChallenge extends Challenge {
             case 14 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.INVISIBILITY, dur, amp, true), amp);
             case 15 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, dur, amp, true), amp);
             case 16 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.LEVITATION, dur, amp, true), amp);
-            case 17 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.LUCK, dur, amp, true), amp);
-            case 18 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.MINING_FATIGUE, dur, amp, true), amp);
-            case 19 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.NAUSEA, dur, amp, true), amp);
-            case 20 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, dur, amp, true), amp);
-            case 21 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.POISON, dur, amp, true), amp);
-            case 22 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.RAID_OMEN, dur, amp, true), amp);
-            case 23 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.REGENERATION, dur, amp, true), amp);
-            case 24 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.RESISTANCE, dur, amp, true), amp);
-            case 25 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.SATURATION, dur, amp, true), amp);
-            case 26 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, dur, amp, true), amp);
-            case 27 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.SPEED, dur, amp, true), amp);
-            case 28 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.STRENGTH, dur, amp, true), amp);
-            case 29 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.TRIAL_OMEN, dur, amp, true), amp);
-            case 30 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.UNLUCK, dur, amp, true), amp);
-            case 31 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, dur, amp, true), amp);
-            case 32 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.WEAKNESS, dur, amp, true), amp);
-            case 33 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.POISON, dur, amp, true), amp);
+            case 17 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.MINING_FATIGUE, dur, amp, true), amp);
+            case 18 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.NAUSEA, dur, amp, true), amp);
+            case 19 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, dur, amp, true), amp);
+            case 20 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.POISON, dur, amp, true), amp);
+            case 21 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.RAID_OMEN, dur, amp, true), amp);
+            case 22 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.REGENERATION, dur, amp, true), amp);
+            case 23 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.RESISTANCE, dur, amp, true), amp);
+            case 24 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.SATURATION, dur, amp, true), amp);
+            case 25 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, dur, amp, true), amp);
+            case 26 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.SPEED, dur, amp, true), amp);
+            case 27 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.STRENGTH, dur, amp, true), amp);
+            case 28 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.TRIAL_OMEN, dur, amp, true), amp);
+            case 29 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, dur, amp, true), amp);
+            case 30 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.WEAKNESS, dur, amp, true), amp);
+            case 31 -> giveAllPlayersEffect(new PotionEffect(PotionEffectType.POISON, dur, amp, true), amp);
         }
 
     }
@@ -115,7 +113,7 @@ public class RandomEffectChallenge extends Challenge {
     }
 
     public void broadcastEffect() {
-        Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.GREEN + "next effect: " + effect.getType().getName() + " " + amplifier);
+        Bukkit.broadcastMessage(Main.getInstance().prefix + ChatColor.GREEN + "next effect: " + effect.getType() + " " + amplifier);
     }
 
     private void stop() {
