@@ -3,11 +3,9 @@ package com.xfrage.listeners;
 import com.xfrage.Main;
 import com.xfrage.timer.Timer;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
@@ -29,7 +27,7 @@ public class TimerPauseListener implements Listener {
     }
 
     @EventHandler
-    public static boolean onPickUp(EntityTargetLivingEntityEvent event) {
+    public static boolean onPickUp(EntityTargetLivingEntityEvent event) { // keine mob agro
         if (!timer.isRunning())
             event.setCancelled(true);
         return true;

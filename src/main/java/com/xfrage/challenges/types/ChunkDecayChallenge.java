@@ -7,14 +7,18 @@ import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ChunkDecayChallenge extends Challenge implements Listener{
 
-    private Chunk lastChunk;
+    private final Map<Player, Chunk> lastChunkMap = new HashMap<>();
 
     public ChunkDecayChallenge(String title) {
         super(title);
@@ -23,6 +27,9 @@ public class ChunkDecayChallenge extends Challenge implements Listener{
     @Override
     public void startChallenge() {
         Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            lastChunkMap.put(p, p.getLocation().getChunk());
+        }
     }
 
     @Override
@@ -34,17 +41,20 @@ public class ChunkDecayChallenge extends Challenge implements Listener{
     public void onMove(PlayerMoveEvent event) {
         if (!isEnabled()) return;
 
+        Player player = event.getPlayer();
+
+        assert event.getTo() != null;
         Chunk current = event.getTo().getChunk();
+        Chunk lastChunk = lastChunkMap.get(player);
 
         if (lastChunk == null) {
-            lastChunk = current;
+            lastChunkMap.put(player, current);
             return;
         }
 
         if (!current.equals(lastChunk)) {
-            Chunk toDestroy = lastChunk;
-            lastChunk = current;
-            yeetChunk(toDestroy);
+            lastChunkMap.put(player, current);
+            yeetChunk(lastChunk);
         }
 
     }
@@ -83,7 +93,7 @@ public class ChunkDecayChallenge extends Challenge implements Listener{
                 y--;
             }
 
-        }.runTaskTimer(Main.getInstance(), 0, 2);
+        }.runTaskTimer(Main.getInstance(), 0, 8);
     }
 
     public int getHighestY(Chunk chunk) {
