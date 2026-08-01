@@ -27,28 +27,14 @@ public class CreateWorldCommand implements CommandExecutor {
             return false;
         }
 
-        switch(args[0]) {
-            case "create": // create world set
-                createWorlds(args[1], sender);
-                break;
-            case "tp": // teleport all players into world set
-                tpWorld(args, sender);
-                break;
-            case "delete": // delete world set
-                deleteWorlds(args[1], sender);
-                break;
-            case "list": // list all active worlds
-                listWorlds(sender);
-                break;
-            case "current": // show current world
-                currentWorld(sender);
-                break;
-            case "archive": // archive world set
-                archive(sender, args[1]);
-                break;
-            default:
-                sendUsage(sender);
-                break;
+        switch (args[0]) {
+            case "create" -> createWorlds(args[1], sender);
+            case "tp" -> tpWorld(args, sender);
+            case "delete" -> deleteWorlds(args[1], sender);
+            case "list" -> listWorlds(sender);
+            case "current" -> currentWorld(sender);
+            case "archive" -> archive(sender, args[1]);
+            default -> sendUsage(sender);
         }
 
         return false;
@@ -229,7 +215,7 @@ public class CreateWorldCommand implements CommandExecutor {
 
     public File createArchiveDir(String baseName) {
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy-HH.mm"));
-        File dir = new File("archives/" + baseName + "_" + timestamp);
+        File dir = new File("plugins/xPlugin/archives/" + baseName + "_" + timestamp);
         dir.mkdirs();
         return dir;
     }
